@@ -2,6 +2,7 @@ import { useState } from "react";
 import { invoke } from "@tauri-apps/api/core";
 import "./App.css";
 import Map from "./components/Map.tsx"
+import Overlay from "./components/Overlay.tsx"
 
 function App() {
   const [greetMsg, setGreetMsg] = useState("");
@@ -13,8 +14,9 @@ function App() {
   }
 
   return (
-    <main className="container">
+    <main>
       <Map/>
+      <Overlay/>
     </main>
   );
 }

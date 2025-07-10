@@ -1,6 +1,13 @@
 import ReactMap from 'react-map-gl/maplibre';
 import 'maplibre-gl/dist/maplibre-gl.css';
 
+const style = {
+  'position': 'fixed',
+  'top': '0',
+  'left': '0',
+  'width': '100%',
+};
+
 function Map() {
   return (
     <ReactMap
@@ -9,7 +16,7 @@ function Map() {
         latitude: 37.8,
         zoom: 14
       }}
-      style={{position: 'fixed', top: 0, left: 0, width: '100%'}}
+      style={style}
       mapStyle="https://tiles.openfreemap.org/styles/liberty"
       />
   );
