@@ -1,16 +1,57 @@
 .sidebar {
+  visibility: visible;
   width: 25%;
   max-width: 400px;
   height: 100%;
   box-sizing: border-box;
+  padding: 10px;
   background-color: darkgray;
   display: flex;
   flex-direction: column;
   justify-content: top;
   align-items: flex-start;
-  padding: 10px;
+  gap: 10px;
+  transition: all 0.5s;
+  transition-behavior: allow-discrete;
+  transition-timing-function: ease-out;
+}
+
+.sidebar.collapsed {
+  visibility: hidden;
+  width: 0;
+  padding: 0;
 }
 
 .sidebar p {
   margin: 0;
+  padding: 0;
+}
+
+.sidebarMenu {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 10px;
+  background-color: lightgray;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 10px;
+  border-radius: 10px;
+  border-style: solid;
+  border-width: 1px;
+}
+
+.sidebarFileList {
+  width: 100%;
+  height:100%;
+  box-sizing: border-box;
+  padding: 10px;
+  background-color: lightgray;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  border-radius: 10px;
+  border-style: solid;
+  border-width: 1px;
 }

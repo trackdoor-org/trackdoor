@@ -1,12 +1,13 @@
 import "./toolbar.css";
 import Button from "../button/button.tsx";
+import infoIcon from "../../assets/icons/info.svg"
 
 function Toolbar() {
   return (
       <div className="toolbar">
-        <Button text="1"/>
-        <Button text="2"/>
-        <Button text="3"/>
+        <Button icon={infoIcon}/>
+        <Button icon={infoIcon}/>
+        <Button icon={infoIcon}/>
       </div>
   );
 }
