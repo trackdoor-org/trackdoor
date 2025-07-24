@@ -1,6 +1,7 @@
 .sidebar {
   visibility: visible;
   width: 25%;
+  min-width: 300px;
   max-width: 400px;
   height: 100%;
   box-sizing: border-box;
@@ -20,6 +21,7 @@
   visibility: hidden;
   width: 0;
   padding: 0;
+  min-width: 0;
 }
 
 .sidebar p {

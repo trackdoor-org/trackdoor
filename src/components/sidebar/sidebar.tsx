@@ -1,5 +1,6 @@
 import "./sidebar.css";
 import Button from "../button/button.tsx"
+import File from '../file/file.tsx'
 import newFileIcon from "../../assets/icons/new-file.svg";
 import openFileIcon from "../../assets/icons/open-file.svg";
 import cogwheelIcon from "../../assets/icons/cogwheel.svg";
@@ -34,8 +35,8 @@ function Sidebar({ isCollapsed = false }: SidebarProps) {
        </div>
 
        <div className="sidebarFileList">
-         <p>Item 1</p>
-         <p>Item 2</p>
+        <File/>
+        <File/>
        </div>
     </div>
   )
