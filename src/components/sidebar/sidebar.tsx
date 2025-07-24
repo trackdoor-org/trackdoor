@@ -1,4 +1,5 @@
 import "./sidebar.css";
+import { invoke } from "@tauri-apps/api/core";
 import Button from "../button/button.tsx"
 import File from '../file/file.tsx'
 import newFileIcon from "../../assets/icons/new-file.svg";
@@ -24,12 +25,17 @@ const openFile = async ()=>{
 }
 
 
+const createNewFile = async ()=> {
+  await invoke('create_new_file');
+}
+
+
 function Sidebar({ isCollapsed = false }: SidebarProps) {
 
   return (
      <div className={ isCollapsed ? "sidebar collapsed" : "sidebar"}>
        <div className="sidebarMenu">
-         <Button icon={ newFileIcon }/>
+         <Button icon={ newFileIcon } onClick={ createNewFile }/>
          <Button icon={ openFileIcon } onClick={ openFile }/>
          <Button icon={ cogwheelIcon }/>
        </div>
