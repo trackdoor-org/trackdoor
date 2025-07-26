@@ -1,11 +1,10 @@
 import "./sidebar.css";
 import { invoke } from "@tauri-apps/api/core";
-import Button from "../button/button.tsx"
-import File from '../file/file.tsx'
-import newFileIcon from "../../assets/icons/new-file.svg";
-import openFileIcon from "../../assets/icons/open-file.svg";
-import cogwheelIcon from "../../assets/icons/cogwheel.svg";
 import { open } from '@tauri-apps/plugin-dialog';
+import { Button, File } from "@components/index"
+import newFileIcon from "@assets/icons/new-file.svg";
+import openFileIcon from "@assets/icons/open-file.svg";
+import cogwheelIcon from "@assets/icons/cogwheel.svg";
 
 
 interface SidebarProps {

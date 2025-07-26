@@ -1,8 +1,7 @@
 import "./overlay.css";
-import Toolbar from "../toolbar/toolbar.tsx";
-import Button from "../button/button.tsx";
-import menuIcon from "../../assets/icons/menu.svg";
-import chevronLeft from "../../assets/icons/chevron-left.svg";
+import { Toolbar, Button } from "@components/index";
+import menuIcon from "@assets/icons/menu.svg";
+import chevronLeft from "@assets/icons/chevron-left.svg";
 
 interface OverlayProps {
   sidebarButtonHandler: () => void;

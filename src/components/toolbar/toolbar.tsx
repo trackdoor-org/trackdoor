@@ -1,6 +1,6 @@
 import "./toolbar.css";
-import Button from "../button/button.tsx";
-import infoIcon from "../../assets/icons/info.svg"
+import { Button } from "@components/index";
+import infoIcon from "@assets/icons/info.svg"
 
 function Toolbar() {
   return (

@@ -1,10 +1,10 @@
 import './file.css';
-import Button from '../button/button.tsx';
-import closeIcon from '../../assets/icons/close.svg';
-import diskIcon from '../../assets/icons/disk.svg';
-import eyeIcon from '../../assets/icons/eye.svg';
-import chevronDownIcon from '../../assets/icons/chevron-down-small.svg';
-import chevronRightIcon from '../../assets/icons/chevron-right-small.svg';
+import { Button } from "@components/index";
+import closeIcon from '@assets/icons/close.svg';
+import diskIcon from '@assets/icons/disk.svg';
+import eyeIcon from '@assets/icons/eye.svg';
+import chevronDownIcon from '@assets/icons/chevron-down-small.svg';
+import chevronRightIcon from '@assets/icons/chevron-right-small.svg';
 
 
 function File() {

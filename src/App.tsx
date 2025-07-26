@@ -7,8 +7,7 @@ import {
   GeolocateControl
 } from 'react-map-gl/maplibre';
 import 'maplibre-gl/dist/maplibre-gl.css';
-import Overlay from "./components/overlay/overlay.tsx";
-import Sidebar from "./components/sidebar/sidebar.tsx";
+import { Overlay, Sidebar } from "@components/index";
 
 
 function App() {
