@@ -5,9 +5,15 @@ import diskIcon from '@assets/icons/disk.svg';
 import eyeIcon from '@assets/icons/eye.svg';
 import chevronDownIcon from '@assets/icons/chevron-down-small.svg';
 import chevronRightIcon from '@assets/icons/chevron-right-small.svg';
+import { GpxFile } from '@/types/types';
 
 
-function File() {
+interface FileProps {
+  gpxFile: GpxFile;
+}
+
+
+function File({ gpxFile }: FileProps) {
   return (
     <div className="file">
       
@@ -15,7 +21,7 @@ function File() {
 
         <div className="left">
           <img className="collapse" src={ chevronRightIcon }></img>
-          <label>FileName</label>
+          <label>{gpxFile.name}</label>
           <Button icon={ eyeIcon }/>
         </div>
 

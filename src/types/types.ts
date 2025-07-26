@@ -1,4 +1,5 @@
-export type File = {
+export type GpxFile = {
   path: string;
   name: string;
 };
+

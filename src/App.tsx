@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { invoke } from "@tauri-apps/api/core";
+import { useState, useEffect } from "react";
+import { invoke, Channel } from "@tauri-apps/api/core";
 import "./App.css";
 import {
   Map,
@@ -8,19 +8,38 @@ import {
 } from 'react-map-gl/maplibre';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import { Overlay, Sidebar } from "@components/index";
+import { GpxFile } from "./types/types";
 
 
 function App() {
+  const [gpxFiles, setGpxFiles] = useState<GpxFile[]>([]);
   const [sidebarVisibility, setSidebarVisibility] = useState(true);
   
    const toggleSidebar = ()=>{
     setSidebarVisibility(!sidebarVisibility);
   }
 
+  const onEvent = new Channel<GpxFile[]>();
+    onEvent.onmessage = (message) => {
+      console.log("Event: get_gpx_files");
+      setGpxFiles(message);
+  };
+
+
+  useEffect(() => {
+    const getGpxFiles = async ()=> {
+      await invoke('get_gpx_files', {onEvent});
+    };
+
+    getGpxFiles();
+
+  }, []);
+
+
   return (
     <main>
       <div className="container">
-      <Sidebar isCollapsed={!sidebarVisibility}/>
+      <Sidebar isCollapsed={!sidebarVisibility} gpxFiles={gpxFiles}/>
 
       <Map initialViewState={{
           longitude: -122.4,
