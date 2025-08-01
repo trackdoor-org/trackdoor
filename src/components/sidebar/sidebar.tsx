@@ -48,8 +48,8 @@ function Sidebar({ isCollapsed = false, gpxFiles = [] }: SidebarProps) {
        </div>
 
        <div className="sidebarFileList">
-        {gpxFiles.map((gpxFile: GpxFile) => (
-          <File gpxFile={gpxFile}/>
+        {gpxFiles.map((gpxFile: GpxFile, index: number) => (
+          <File gpxFile={gpxFile} index={index}/>
         ))}
        </div>
     </div>

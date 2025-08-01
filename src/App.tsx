@@ -21,7 +21,7 @@ function App() {
 
   const onEvent = new Channel<GpxFile[]>();
     onEvent.onmessage = (message) => {
-      console.log("Event: get_gpx_files");
+      //console.log("Event: get_gpx_files");
       setGpxFiles(message);
   };
 
