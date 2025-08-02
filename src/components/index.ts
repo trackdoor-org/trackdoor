@@ -4,11 +4,4 @@ import Overlay from "./overlay/overlay";
 import Sidebar from "./sidebar/sidebar";
 import Toolbar from "./toolbar/toolbar";
 
-
-export {
-  Button,
-  File,
-  Overlay,
-  Sidebar,
-  Toolbar,
-};
+export { Button, File, Overlay, Sidebar, Toolbar };

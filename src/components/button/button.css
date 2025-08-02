@@ -22,7 +22,7 @@
   background-color: lightgray;
 }
 
- .button-container img{
+.button-container img {
   position: absolute;
   top: 25%;
   left: 25%;
@@ -30,4 +30,3 @@
   height: 50%;
   pointer-events: none;
 }
-

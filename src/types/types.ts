@@ -3,4 +3,3 @@ export type GpxFile = {
   name: string;
   is_saved: boolean;
 };
-

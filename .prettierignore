@@ -1,0 +1,6 @@
+.git
+public
+node_modules
+src/assets
+src-tauri/icons
+src-tauri/target

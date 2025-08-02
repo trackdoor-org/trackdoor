@@ -10,13 +10,16 @@ interface OverlayProps {
 
 function Overlay({ sidebarButtonHandler, sidebarVisibility }: OverlayProps) {
   return (
-      <div className="overlay">
-        <Toolbar/>
+    <div className="overlay">
+      <Toolbar />
 
-        <div className="sidebarButtonContainer">
-          <Button onClick={sidebarButtonHandler} icon={sidebarVisibility ? chevronLeft : menuIcon}/>
-        </div>
+      <div className="sidebarButtonContainer">
+        <Button
+          onClick={sidebarButtonHandler}
+          icon={sidebarVisibility ? chevronLeft : menuIcon}
+        />
       </div>
+    </div>
   );
 }
 

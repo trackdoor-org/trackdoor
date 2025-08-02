@@ -1,4 +1,5 @@
-html, body {
+html,
+body {
   margin: 0;
 }
 
@@ -25,4 +26,3 @@ html, body {
   flex-direction: row;
   justify-content: left;
 }
-
