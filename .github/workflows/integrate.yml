@@ -30,4 +30,4 @@ jobs:
           node-version: 24.x
       - uses: dtolnay/rust-toolchain@stable
       - run: yarn install
-      - run: yarn tauri dev
+      - run: yarn tauri build
