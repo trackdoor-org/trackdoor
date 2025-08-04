@@ -23,11 +23,13 @@ jobs:
 
     steps:
       - run: sudo apt update
-      - run: sudo apt install libwebkit2gtk-4.1-dev build-essential curl wget file libxdo-dev libssl-dev libayatana-appindicator3-dev librsvg2-dev -y
+      - name: Install dependencies
+        run: sudo apt install libwebkit2gtk-4.1-dev build-essential curl wget file libxdo-dev libssl-dev libayatana-appindicator3-dev librsvg2-dev -y
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: 24.x
       - uses: dtolnay/rust-toolchain@stable
       - run: yarn install
-      - run: yarn tauri build
+      - name: Build
+        run: yarn tauri build --no-bundle
