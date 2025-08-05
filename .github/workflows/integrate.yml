@@ -16,7 +16,8 @@ jobs:
         with:
           node-version: 24.x
       - run: npm install --save-dev --save-exact prettier
-      - run: npx prettier . --check
+      - name: Check formatting
+        run: npx prettier . --check
 
   build:
     runs-on: ubuntu-latest

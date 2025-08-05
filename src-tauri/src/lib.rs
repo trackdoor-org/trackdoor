@@ -2,9 +2,12 @@ use std::sync::Mutex;
 use std::time::Duration;
 use std::thread::{sleep, spawn};
 use std::path::Path;
+use std::io::BufReader;
+use std::fs::File;
 use serde::{Serialize, Deserialize};
 use tauri::{ipc::Channel, AppHandle, Manager};
 use tauri_plugin_dialog::{DialogExt, MessageDialogButtons};
+use gpx::{Gpx, GpxVersion};
 
 
 #[derive(Default)]
@@ -17,6 +20,7 @@ struct GpxFile {
     path: String,
     name: String,
     is_saved: bool,
+    gpx: Gpx,
 }
 
 
@@ -30,6 +34,14 @@ fn create_new_file(app: AppHandle) {
             path: "".to_string(),
             name: "Untitled".to_string(),
             is_saved: false,
+            gpx: Gpx {
+                version: GpxVersion::Gpx11,
+                creator: None,
+                metadata: None,
+                waypoints: vec![],
+                tracks: vec![],
+                routes: vec![],
+            }
         }
     );
 }
@@ -62,6 +74,29 @@ fn open_gpx_file(path_str: String, app: AppHandle) {
     let state = app.state::<Mutex<AppState>>();
     let mut state = state.lock().unwrap();
 
+    let file = File::open(&path_str);
+
+    let file: File = match file {
+        Ok(file) => file,
+        Err(error) => {
+            // TODO: Show the error in a popup
+            println!("{}", error);
+            return;
+        }
+    };
+    
+    let reader = BufReader::new(file);
+    let gpx = gpx::read(reader);
+
+    let gpx: Gpx = match gpx {
+        Ok(gpx) => gpx,
+        Err(error) => {
+            // TODO: Show the error in a popup
+            println!("{}", error); 
+            return;
+        },
+    };
+
     let path = Path::new(&path_str);
     let file_name = path.file_name().unwrap().to_str().unwrap();
 
@@ -70,6 +105,7 @@ fn open_gpx_file(path_str: String, app: AppHandle) {
             path: path_str.to_string(),
             name: file_name.to_string(),
             is_saved: true,
+            gpx: gpx,
         }
     );
 }
