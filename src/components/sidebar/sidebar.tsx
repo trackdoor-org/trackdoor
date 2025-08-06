@@ -25,7 +25,7 @@ const openFile = async () => {
   });
 
   if (filePath) {
-    invoke("open_gpx_file", { pathStr: filePath });
+    await invoke("open_gpx_file", { pathStr: filePath });
   }
 };
 

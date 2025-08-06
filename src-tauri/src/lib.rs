@@ -6,7 +6,7 @@ use std::io::BufReader;
 use std::fs::File;
 use serde::{Serialize, Deserialize};
 use tauri::{ipc::Channel, AppHandle, Manager};
-use tauri_plugin_dialog::{DialogExt, MessageDialogButtons};
+use tauri_plugin_dialog::{DialogExt, MessageDialogButtons, MessageDialogKind};
 use gpx::{Gpx, GpxVersion};
 
 
@@ -70,7 +70,7 @@ async fn close_gpx_file(index: usize, app: AppHandle) {
 
 
 #[tauri::command]
-fn open_gpx_file(path_str: String, app: AppHandle) {
+async fn open_gpx_file(path_str: String, app: AppHandle) {
     let state = app.state::<Mutex<AppState>>();
     let mut state = state.lock().unwrap();
 
@@ -79,8 +79,7 @@ fn open_gpx_file(path_str: String, app: AppHandle) {
     let file: File = match file {
         Ok(file) => file,
         Err(error) => {
-            // TODO: Show the error in a popup
-            println!("{}", error);
+            show_error_popup(&app, &error.to_string());
             return;
         }
     };
@@ -91,8 +90,7 @@ fn open_gpx_file(path_str: String, app: AppHandle) {
     let gpx: Gpx = match gpx {
         Ok(gpx) => gpx,
         Err(error) => {
-            // TODO: Show the error in a popup
-            println!("{}", error); 
+            show_error_popup(&app, &error.to_string());
             return;
         },
     };
@@ -125,6 +123,15 @@ fn get_gpx_files(app: AppHandle, on_event: Channel<Vec<GpxFile>>) {
             sleep(Duration::from_millis(100))
         }
     });
+}
+
+
+fn show_error_popup(app: &AppHandle, error_msg: &str) {
+    app.dialog()
+    .message(format!("Error: {}", error_msg))
+    .kind(MessageDialogKind::Error)
+    .title("Error")
+    .blocking_show();
 }
 
 
