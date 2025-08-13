@@ -1,4 +1,5 @@
 use std::sync::Mutex;
+use std::path::PathBuf;
 use std::time::Duration;
 use std::thread::{sleep, spawn};
 use std::path::Path;
@@ -60,8 +61,8 @@ async fn close_gpx_file(index: usize, app: AppHandle) {
         .blocking_show();
 
        if should_save {
-           // TODO: Implement saving
-            println!("save changes");
+           println!("want to save");
+           //save_gpx_file(index, app).await;
        }
     }
 
@@ -126,6 +127,49 @@ fn get_gpx_files(app: AppHandle, on_event: Channel<Vec<GpxFile>>) {
 }
 
 
+#[tauri::command]
+async fn save_gpx_file(index: usize, app: AppHandle) {
+    let state = app.state::<Mutex<AppState>>();
+    let mut state = state.lock().unwrap();
+
+    let gpx_file = &mut state.gpx_files[index];
+
+    if gpx_file.path == "" {
+        let file_path = app
+            .dialog()
+            .file()
+            .add_filter("gpx", &["gpx"])
+            .add_filter("All files", &["*"])
+            .blocking_save_file();
+        
+        let file_path = match file_path {
+            Some(file_path) => file_path.into_path(),
+            None => {
+                return;
+            },
+        };
+
+        let mut file_path: PathBuf = match file_path {
+            Ok(file_path) => file_path,
+            Err(error) => {
+                show_error_popup(&app, &error.to_string());
+                return;
+            },
+        };
+
+        file_path.set_extension("gpx");
+
+        gpx_file.path = file_path.to_str().unwrap().to_string();
+        gpx_file.name = file_path.file_name().expect("REASON").to_str().unwrap().to_string();
+    }
+
+    println!("{}", gpx_file.path);
+    // TODO: Write to file
+    
+    gpx_file.is_saved = true;
+}
+
+
 fn show_error_popup(app: &AppHandle, error_msg: &str) {
     app.dialog()
     .message(format!("Error: {}", error_msg))
@@ -144,7 +188,7 @@ pub fn run() {
             app.manage(Mutex::new(AppState::default()));
             Ok(())
         })
-        .invoke_handler(tauri::generate_handler![create_new_file, close_gpx_file, open_gpx_file, get_gpx_files,])
+        .invoke_handler(tauri::generate_handler![create_new_file, close_gpx_file, open_gpx_file, get_gpx_files, save_gpx_file,])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }
