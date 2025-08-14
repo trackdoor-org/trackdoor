@@ -51,22 +51,36 @@ fn create_new_file(app: AppHandle) {
 #[tauri::command]
 async fn close_gpx_file(index: usize, app: AppHandle) {
     let state = app.state::<Mutex<AppState>>();
-    let mut state = state.lock().unwrap();
+    let mut should_save: bool= false;
 
-    if !state.gpx_files[index].is_saved {
-        let should_save = app.dialog()
-        .message("Do you want to save the changes?")
-        .title("Unsaved changes")
-        .buttons(MessageDialogButtons::YesNo)
-        .blocking_show();
+    {
+        let mut state = state.lock().unwrap();
 
-       if should_save {
-           println!("want to save");
-           //save_gpx_file(index, app).await;
-       }
+        if !state.gpx_files[index].is_saved {
+            should_save = app.dialog()
+                .message("Do you want to save the changes?")
+                .title("Unsaved changes")
+                .buttons(MessageDialogButtons::YesNo)
+                .blocking_show();
+
+            if !should_save {
+                state.gpx_files.remove(index);
+                return;
+            }
+        }
     }
 
-    state.gpx_files.remove(index);
+    if should_save {
+        save_gpx_file(index, app.clone()).await;
+
+        let mut state = state.lock().unwrap();
+        if state.gpx_files[index].is_saved {
+            state.gpx_files.remove(index);
+        }
+    } else {
+        let mut state = state.lock().unwrap();
+        state.gpx_files.remove(index);
+    }
 }
 
 
