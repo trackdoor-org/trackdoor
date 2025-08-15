@@ -7,9 +7,11 @@
 # Trackdoor
 
 ## About
+
 Trackdoor is a cross platform GPX file editor.
 
 ## Tech Stack
+
 <div>
   <a target="_blank" href="https://v2.tauri.app/">            <img width="30px" src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/tauri/tauri-original.svg" /></a>
   <a target="_blank" href="https://www.rust-lang.org/">       <img width="30px" src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/rust/rust-original.svg" /></a>
