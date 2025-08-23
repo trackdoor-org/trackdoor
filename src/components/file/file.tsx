@@ -4,6 +4,7 @@ import { invoke } from "@tauri-apps/api/core";
 import { Button } from "@components/index";
 import closeIcon from "@assets/icons/close.svg";
 import eyeIcon from "@assets/icons/eye.svg";
+import saveIcon from "@assets/icons/disk.svg";
 import chevronDownIcon from "@assets/icons/chevron-down-small.svg";
 import chevronRightIcon from "@assets/icons/chevron-right-small.svg";
 import { GpxFile } from "@/types/types";
@@ -20,6 +21,10 @@ function File({ gpxFile, index }: FileProps) {
     await invoke("close_gpx_file", { index: index });
   };
 
+  const saveGpxFile = async () => {
+    await invoke("save_gpx_file", { index: index });
+  };
+
   return (
     <div className="file">
       <div className="header">
@@ -34,6 +39,7 @@ function File({ gpxFile, index }: FileProps) {
           <label>{gpxFile.is_saved ? gpxFile.name : gpxFile.name + "*"}</label>
         </div>
         <div className="right">
+          <Button icon={saveIcon} onClick={saveGpxFile} />
           <Button icon={eyeIcon} />
           <Button icon={closeIcon} onClick={closeGpxFile} />
         </div>
