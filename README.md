@@ -1,7 +1,7 @@
 <div>
   <img alt="GitHub Release" src="https://img.shields.io/github/v/release/trackdoor-org/trackdoor">
+  <img alt="GitHub Actions Workflow Status" src="https://img.shields.io/github/actions/workflow/status/trackdoor-org/trackdoor/integrate.yml?label=CI">
   <img alt="GitHub License" src="https://img.shields.io/github/license/trackdoor-org/trackdoor">
-  <img alt="GitHub Actions Workflow Status" src="https://img.shields.io/github/actions/workflow/status/trackdoor-org/trackdoor/integrate.yml">
 </div>
 
 # Trackdoor
