@@ -12,30 +12,44 @@ import { GpxFile } from "./types/types";
 
 function App() {
   const [gpxFiles, setGpxFiles] = useState<GpxFile[]>([]);
+  const [selectedFileIdx, setSelectedFileIdx] = useState<number>(0);
   const [sidebarVisibility, setSidebarVisibility] = useState(true);
 
   const toggleSidebar = () => {
     setSidebarVisibility(!sidebarVisibility);
   };
 
-  const onEvent = new Channel<GpxFile[]>();
-  onEvent.onmessage = (message) => {
-    //console.log("Event: get_gpx_files");
+  const onGpxDataRecived = new Channel<GpxFile[]>();
+  onGpxDataRecived.onmessage = (message) => {
     setGpxFiles(message);
+  };
+
+  const onSelectedFileIdxRecived = new Channel<number>();
+  onSelectedFileIdxRecived.onmessage = (message) => {
+    setSelectedFileIdx(message);
   };
 
   useEffect(() => {
     const getGpxFiles = async () => {
-      await invoke("get_gpx_files", { onEvent });
+      await invoke("get_gpx_files", { onGpxDataRecived });
+    };
+
+    const getSelectedFileIdx = async () => {
+      await invoke("get_selected_file_idx", { onSelectedFileIdxRecived });
     };
 
     getGpxFiles();
+    getSelectedFileIdx();
   }, []);
 
   return (
     <main>
       <div className="container">
-        <Sidebar isCollapsed={!sidebarVisibility} gpxFiles={gpxFiles} />
+        <Sidebar
+          isCollapsed={!sidebarVisibility}
+          gpxFiles={gpxFiles}
+          selectedFileIdx={selectedFileIdx}
+        />
 
         <Map
           initialViewState={{

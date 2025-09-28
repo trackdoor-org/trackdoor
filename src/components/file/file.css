@@ -8,6 +8,11 @@
   border-width: 1px;
 }
 
+.selected {
+  border-width: 2px;
+  border-color: blue;
+}
+
 .file .header {
   width: 100%;
   height: fit-content;

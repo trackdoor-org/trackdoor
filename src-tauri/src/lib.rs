@@ -1,3 +1,4 @@
+use geojson::{GeoJson, Value, Feature, FeatureCollection, Position};
 use gpx::{Gpx, GpxVersion};
 use serde::{Deserialize, Serialize};
 use std::fs::File;
@@ -13,14 +14,41 @@ use tauri_plugin_dialog::{DialogExt, MessageDialogButtons, MessageDialogKind};
 #[derive(Default)]
 struct AppState {
     gpx_files: Vec<GpxFile>,
+    selected_file_idx: usize,
 }
 
 #[derive(Clone, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
 struct GpxFile {
     path: String,
     name: String,
     is_saved: bool,
+    geo_json_str: String,
     gpx: Gpx,
+}
+
+fn convert_gpx_to_geo_json(gpx: Gpx) -> GeoJson {
+    let mut coords = Vec::new();
+    for track in gpx.tracks {
+        for segment in track.segments {
+            for point in segment.points {
+                coords.push(Position::from(vec![point.point().x(), point.point().y()]));
+            }
+        }
+    }
+
+    let line_string = Value::LineString(coords);
+    let feature = Feature {
+        geometry: Some(line_string.into()),
+        ..Default::default()
+    };
+
+    let geojson = GeoJson::FeatureCollection(FeatureCollection {
+        features: vec![feature],
+        ..Default::default()
+    });
+
+    return geojson;
 }
 
 #[tauri::command]
@@ -32,6 +60,7 @@ fn create_new_file(app: AppHandle) {
         path: "".to_string(),
         name: "Untitled".to_string(),
         is_saved: false,
+        geo_json_str: "".to_string(),
         gpx: Gpx {
             version: GpxVersion::Gpx11,
             creator: None,
@@ -112,22 +141,46 @@ async fn open_gpx_file(path_str: String, app: AppHandle) {
         path: path_str.to_string(),
         name: file_name.to_string(),
         is_saved: true,
+        geo_json_str: convert_gpx_to_geo_json(gpx.clone()).to_string(),
         gpx: gpx,
     });
 }
 
 #[tauri::command]
-fn get_gpx_files(app: AppHandle, on_event: Channel<Vec<GpxFile>>) {
+fn get_gpx_files(app: AppHandle, on_gpx_data_recived: Channel<Vec<GpxFile>>) {
     spawn(move || loop {
         let state = app.state::<Mutex<AppState>>();
         let state = state.lock().unwrap();
 
-        on_event.send(state.gpx_files.clone()).unwrap();
+        on_gpx_data_recived.send(state.gpx_files.clone()).unwrap();
 
         drop(state);
 
         sleep(Duration::from_millis(100))
     });
+}
+
+
+#[tauri::command]
+fn get_selected_file_idx(app: AppHandle, on_selected_file_idx_recived: Channel<usize>) {
+    spawn(move || loop {
+        let state = app.state::<Mutex<AppState>>();
+        let state = state.lock().unwrap();
+
+        on_selected_file_idx_recived.send(state.selected_file_idx.clone()).unwrap();
+
+        drop(state);
+
+        sleep(Duration::from_millis(100))
+    });
+}
+
+#[tauri::command]
+async fn select_gpx_file(index: usize, app: AppHandle) {
+    let state = app.state::<Mutex<AppState>>();
+    let mut state = state.lock().unwrap();
+
+    state.selected_file_idx = index;
 }
 
 #[tauri::command]
@@ -208,6 +261,8 @@ pub fn run() {
             open_gpx_file,
             get_gpx_files,
             save_gpx_file,
+            get_selected_file_idx,
+            select_gpx_file,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

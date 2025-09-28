@@ -12,9 +12,10 @@ import { GpxFile } from "@/types/types";
 interface FileProps {
   gpxFile: GpxFile;
   index: number;
+  selectedFileIdx: number;
 }
 
-function File({ gpxFile, index }: FileProps) {
+function File({ gpxFile, index, selectedFileIdx }: FileProps) {
   const [isCollapsed, setIsCollapsed] = useState(true);
 
   const closeGpxFile = async () => {
@@ -25,8 +26,19 @@ function File({ gpxFile, index }: FileProps) {
     await invoke("save_gpx_file", { index: index });
   };
 
+  const selectGpxFile = async () => {
+    await invoke("select_gpx_file", { index: index });
+  };
+
   return (
-    <div className="file">
+    <div
+      className={"file" + (index == selectedFileIdx ? " selected" : "")}
+      onClick={() => {
+        if (index != selectedFileIdx) {
+          selectGpxFile();
+        }
+      }}
+    >
       <div className="header">
         <div className="left">
           <img
@@ -36,7 +48,7 @@ function File({ gpxFile, index }: FileProps) {
               setIsCollapsed(!isCollapsed);
             }}
           ></img>
-          <label>{gpxFile.is_saved ? gpxFile.name : gpxFile.name + "*"}</label>
+          <label>{gpxFile.isSaved ? gpxFile.name : gpxFile.name + "*"}</label>
         </div>
         <div className="right">
           <Button icon={saveIcon} onClick={saveGpxFile} />

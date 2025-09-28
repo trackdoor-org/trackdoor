@@ -10,6 +10,7 @@ import { GpxFile } from "@/types/types";
 interface SidebarProps {
   isCollapsed?: boolean;
   gpxFiles?: GpxFile[];
+  selectedFileIdx?: number;
 }
 
 const openFile = async () => {
@@ -33,7 +34,11 @@ const createNewFile = async () => {
   await invoke("create_new_file");
 };
 
-function Sidebar({ isCollapsed = false, gpxFiles = [] }: SidebarProps) {
+function Sidebar({
+  isCollapsed = false,
+  gpxFiles = [],
+  selectedFileIdx = -1,
+}: SidebarProps) {
   return (
     <div className={isCollapsed ? "sidebar collapsed" : "sidebar"}>
       <div className="sidebarMenu">
@@ -44,7 +49,11 @@ function Sidebar({ isCollapsed = false, gpxFiles = [] }: SidebarProps) {
 
       <div className="sidebarFileList">
         {gpxFiles.map((gpxFile: GpxFile, index: number) => (
-          <File gpxFile={gpxFile} index={index} />
+          <File
+            gpxFile={gpxFile}
+            index={index}
+            selectedFileIdx={selectedFileIdx}
+          />
         ))}
       </div>
     </div>
