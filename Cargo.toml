@@ -4,4 +4,13 @@ version = "0.1.0"
 edition = "2024"
 
 [dependencies]
-eframe = "0.34.2"
+#eframe = "0.34.2"
+#egui = "0.34.2"
+env_logger = "0.11.10"
+glam = "0.32.1"
+log = "0.4.29"
+maplibre_native = { version = "0.4.5", features = ["vulkan"] }
+pollster = "0.4.0"
+raw-window-handle = "0.6.2"
+url = "2.5.8"
+winit = "0.30.13"
